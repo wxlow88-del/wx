@@ -1,0 +1,2 @@
+name="wenxin"
+print(name)
