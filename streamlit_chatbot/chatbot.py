@@ -364,6 +364,15 @@ with btn2:
         st.error("🚨 Procrastination Detected!")
 
 # =========================================================================
+# SOUND EFFECTS
+# =========================================================================
+CORRECT_SOUND = "https://www.soundjay.com/buttons/sounds/button-3.mp3"
+WRONG_SOUND = "https://www.soundjay.com/buttons/sounds/button-10.mp3"
+
+def play_sound(sound_url):
+    st.audio(sound_url, format="audio/mp3", autoplay=True)
+
+# =========================================================================
 # REVISION HUB
 # =========================================================================
 st.markdown("---")
@@ -392,9 +401,11 @@ if subject == "Mathematics":
         if st.button("Check Answer"):
             if answer == "6":
                 st.success("✅ Correct!")
+                play_sound(CORRECT_SOUND)
                 st.balloons()
             else:
                 st.error("❌ Wrong answer!")
+                play_sound(WRONG_SOUND)
 
 elif subject == "Science":
 
@@ -479,4 +490,20 @@ st.markdown("---")
 st.markdown(
     "<center>✨ Made with Streamlit | Study Hard, Dream Big ✨</center>",
     unsafe_allow_html=True
-)
+)# =========================================================================
+# SOUND EFFECTS
+# =========================================================================
+def play_correct_sound():
+    st.markdown("""
+        <audio autoplay>
+        <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mp3">
+        </audio>
+    """, unsafe_allow_html=True)
+
+def play_wrong_sound():
+    st.markdown("""
+        <audio autoplay>
+        <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mp3">
+        </audio>
+    """, unsafe_allow_html=True)
+
