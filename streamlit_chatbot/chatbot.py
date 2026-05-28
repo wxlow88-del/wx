@@ -1,3 +1,6 @@
+from random import random
+from tkinter import Menu
+
 import streamlit as st  # type: ignore
 import pandas as pd  # type: ignore
 
@@ -659,9 +662,7 @@ def play_wrong_sound():
 # =========================================================
 # 🐹 HAMSTER VIRTUAL PET SYSTEM
 # =========================================================
-
-elif menu == "🐹 Study Hamster":
-
+if  Menu == "🐹 Study Hamster":
     st.header("🐹 Study Hamster")
 
     st.write(
@@ -868,51 +869,55 @@ elif menu == "🐹 Study Hamster":
 
     st.markdown("---")
 
-    st.subheader("🎁 Daily Reward")
+st.subheader("🎁 Daily Reward")
 
-    if st.button("Claim Daily Seeds 🌻"):
+if st.button("Claim Daily Seeds 🌻"):
+    # 1. Define the reward first!
+    reward = random.randint(5, 20) 
 
-        reward = random.randint(5, 20)
+    # 2. Add it to the session state
+    st.session_state.hamster_xp += reward
 
-        st.session_state.hamster_xp += reward
+    # 3. Display the success message (now it knows what 'reward' is)
+    st.success(f"🎉 You gained {reward} XP!")
 
-        st.success(
-            f"🎉 You gained {reward} XP!"
-        )
 
     # =====================================================
     # ACCESSORY SHOP
     # =====================================================
+    # 
+st.markdown("---")
 
-    st.markdown("---")
+st.subheader("🛍️ Hamster Accessories")
 
-    st.subheader("🛍️ Hamster Accessories")
-
-    accessories = [
+accessories = [
         "🎀 Pink Ribbon",
         "👑 Tiny Crown",
         "🕶️ Cool Glasses",
         "🎓 Graduation Hat"
     ]
 
-    selected_accessory = st.selectbox(
+selected_accessory = st.selectbox(
         "Choose Accessory",
         accessories
     )
+if Menu == "🐹 Study Hamster":
+    st.header("🐹 Study Hamster")
+
+    # Accessory Logic
+    selected_accessory = st.selectbox("Choose an accessory:", ["👑 Crown", "🕶️ Glasses"])
 
     if st.button("Equip Accessory"):
-
-        st.success(
-            f"{st.session_state.hamster_name} equipped {selected_accessory}!"
-        )
+        st.success(f"{st.session_state.hamster_name} equipped {selected_accessory}!")
 
     # =====================================================
     # STUDY BONUS
     # =====================================================
 
     st.markdown("---")
-
     st.subheader("🚀 Study Rewards")
+    
+    # (Your study rewards code goes here, also indented!)
 
     st.info("""
     📚 Complete study tasks to level up faster!
@@ -954,8 +959,6 @@ elif menu == "🐹 Study Hamster":
         st.warning(
             "✨ Keep studying to unlock evolutions!"
         )
-```
-```python id="8ht9ms"
 menu = st.sidebar.radio(
     "Navigate",
     [
@@ -967,5 +970,4 @@ menu = st.sidebar.radio(
         "🐹 Study Hamster"
     ]
 )
-```
 
