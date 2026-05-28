@@ -459,38 +459,189 @@ elif subject == "History":
     st.dataframe(history_df)
 
 # =========================================================================
-# STUDY PROGRESS
-# =========================================================================
-st.markdown("---")
-st.header("🎯 Study Progress")
+```python id="mjlwm6"
+# =========================================================
+# AUTO STUDY PROGRESS TRACKER
+# =========================================================
 
-progress = st.slider(
-    "How productive are you today?",
-    0,
-    100,
-    40
+st.markdown("---")
+st.header("📊 Smart Study Progress Tracker")
+
+# =========================================================
+# SUBJECT DATA
+# =========================================================
+
+subjects = {
+    "Mathematics": [
+        "Algebra",
+        "Trigonometry",
+        "Probability",
+        "Calculus"
+    ],
+
+    "Science": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Astronomy"
+    ],
+
+    "English": [
+        "Grammar",
+        "Essay Writing",
+        "Vocabulary",
+        "Comprehension"
+    ],
+
+    "History": [
+        "World War 1",
+        "World War 2",
+        "Malaysia Independence",
+        "Cold War"
+    ]
+}
+
+# =========================================================
+# SESSION STORAGE
+# =========================================================
+
+if "completed_topics" not in st.session_state:
+    st.session_state.completed_topics = {}
+
+# =========================================================
+# SUBJECT SELECT
+# =========================================================
+
+selected_subject = st.selectbox(
+    "Choose Subject",
+    list(subjects.keys())
 )
 
-st.progress(progress / 100)
+topics = subjects[selected_subject]
 
-if progress >= 80:
-    st.success("🔥 Productivity Beast Mode!")
+st.subheader(f"📚 {selected_subject} Chapters")
+
+# =========================================================
+# CREATE CHECKBOXES
+# =========================================================
+
+completed_count = 0
+
+for topic in topics:
+
+    key_name = f"{selected_subject}_{topic}"
+
+    checked = st.checkbox(
+        f"✅ {topic}",
+        key=key_name
+    )
+
+    if checked:
+        completed_count += 1
+
+# =========================================================
+# CALCULATE PROGRESS
+# =========================================================
+
+total_topics = len(topics)
+
+progress_percentage = int(
+    (completed_count / total_topics) * 100
+)
+
+# =========================================================
+# DISPLAY PROGRESS
+# =========================================================
+
+st.write(f"### 🎯 {selected_subject} Progress")
+
+st.progress(progress_percentage / 100)
+
+st.success(
+    f"{progress_percentage}% completed"
+)
+
+# =========================================================
+# MOTIVATION SYSTEM
+# =========================================================
+
+if progress_percentage == 100:
+
     st.balloons()
 
-elif progress >= 50:
-    st.info("👍 You're doing well!")
+    st.success(
+        f"🏆 Amazing! You completed all {selected_subject} chapters!"
+    )
+
+elif progress_percentage >= 75:
+
+    st.info(
+        "🔥 Almost there! Keep going!"
+    )
+
+elif progress_percentage >= 50:
+
+    st.info(
+        "👍 Great progress so far!"
+    )
 
 else:
-    st.warning("📚 Time to focus!")
 
-# =========================================================================
-# FOOTER
-# =========================================================================
+    st.warning(
+        "📚 Start studying to increase progress!"
+    )
+
+# =========================================================
+# OVERALL PROGRESS
+# =========================================================
+
 st.markdown("---")
-st.markdown(
-    "<center>✨ Made with Streamlit | Study Hard, Dream Big ✨</center>",
-    unsafe_allow_html=True
-)# =========================================================================
+st.subheader("🌍 Overall Study Completion")
+
+overall_total = 0
+overall_completed = 0
+
+for subject_name, subject_topics in subjects.items():
+
+    overall_total += len(subject_topics)
+
+    for topic in subject_topics:
+
+        key_name = f"{subject_name}_{topic}"
+
+        if st.session_state.get(key_name, False):
+            overall_completed += 1
+
+overall_progress = int(
+    (overall_completed / overall_total) * 100
+)
+
+st.progress(overall_progress / 100)
+
+st.write(
+    f"📈 Overall Completion: {overall_progress}%"
+)
+
+# =========================================================
+# ACHIEVEMENTS
+# =========================================================
+
+if overall_progress == 100:
+
+    st.success("🏅 Ultimate Study Master!")
+
+elif overall_progress >= 75:
+
+    st.success("🥇 Elite Student!")
+
+elif overall_progress >= 50:
+
+    st.info("🥈 Rising Scholar!")
+
+else:
+
+    st.warning("✨ Keep learning every day!")
+# =========================================================================
 # SOUND EFFECTS
 # =========================================================================
 def play_correct_sound():
@@ -506,4 +657,316 @@ def play_wrong_sound():
         <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mp3">
         </audio>
     """, unsafe_allow_html=True)
+# =========================================================
+# 🐹 HAMSTER VIRTUAL PET SYSTEM
+# =========================================================
+
+elif menu == "🐹 Study Hamster":
+
+    st.header("🐹 Study Hamster")
+
+    st.write(
+        "Your hamster grows stronger when you study! 📚"
+    )
+
+    # =====================================================
+    # SESSION STATES
+    # =====================================================
+
+    if "hamster_xp" not in st.session_state:
+        st.session_state.hamster_xp = 0
+
+    if "hamster_hunger" not in st.session_state:
+        st.session_state.hamster_hunger = 100
+
+    if "hamster_happiness" not in st.session_state:
+        st.session_state.hamster_happiness = 100
+
+    if "hamster_name" not in st.session_state:
+        st.session_state.hamster_name = "Mochi"
+
+    # =====================================================
+    # NAME CUSTOMIZATION
+    # =====================================================
+
+    hamster_name = st.text_input(
+        "Name Your Hamster",
+        value=st.session_state.hamster_name
+    )
+
+    st.session_state.hamster_name = hamster_name
+
+    # =====================================================
+    # LEVEL SYSTEM
+    # =====================================================
+
+    xp = st.session_state.hamster_xp
+
+    if xp < 20:
+
+        hamster = "🐹"
+        level = "Baby Hamster"
+
+    elif xp < 50:
+
+        hamster = "🐹🎀"
+        level = "Cute Hamster"
+
+    elif xp < 100:
+
+        hamster = "🐹📚"
+        level = "Study Hamster"
+
+    elif xp < 200:
+
+        hamster = "🐹👑"
+        level = "Elite Hamster"
+
+    else:
+
+        hamster = "🐹🔥"
+        level = "Legendary Hamster"
+
+    # =====================================================
+    # DISPLAY PET
+    # =====================================================
+
+    st.markdown(f"""
+    <div class="card">
+    <h1 style='text-align:center;font-size:90px'>
+    {hamster}
+    </h1>
+
+    <h2 style='text-align:center'>
+    {st.session_state.hamster_name}
+    </h2>
+
+    <h3 style='text-align:center'>
+    {level}
+    </h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # =====================================================
+    # STATS
+    # =====================================================
+
+    st.subheader("📊 Hamster Stats")
+
+    st.write(f"⭐ XP: {xp}")
+    st.progress(min(xp / 200, 1.0))
+
+    st.write(
+        f"😊 Happiness: {st.session_state.hamster_happiness}%"
+    )
+
+    st.progress(
+        st.session_state.hamster_happiness / 100
+    )
+
+    st.write(
+        f"🍎 Hunger: {st.session_state.hamster_hunger}%"
+    )
+
+    st.progress(
+        st.session_state.hamster_hunger / 100
+    )
+
+    # =====================================================
+    # ACTION BUTTONS
+    # =====================================================
+
+    st.markdown("---")
+
+    col1, col2, col3 = st.columns(3)
+
+    # FEED
+    with col1:
+
+        if st.button("🥕 Feed Hamster"):
+
+            st.session_state.hamster_hunger += 10
+
+            if st.session_state.hamster_hunger > 100:
+                st.session_state.hamster_hunger = 100
+
+            st.success(
+                f"{st.session_state.hamster_name} is full and happy!"
+            )
+
+    # PLAY
+    with col2:
+
+        if st.button("🎾 Play With Hamster"):
+
+            st.session_state.hamster_happiness += 10
+
+            if st.session_state.hamster_happiness > 100:
+                st.session_state.hamster_happiness = 100
+
+            st.success(
+                f"{st.session_state.hamster_name} loved playing!"
+            )
+
+    # STUDY
+    with col3:
+
+        if st.button("📚 Study Together"):
+
+            st.session_state.hamster_xp += 15
+
+            st.session_state.hamster_happiness += 5
+
+            st.success(
+                f"{st.session_state.hamster_name} gained XP!"
+            )
+
+            st.balloons()
+
+    # =====================================================
+    # AUTO DECAY
+    # =====================================================
+
+    st.session_state.hamster_hunger -= 1
+    st.session_state.hamster_happiness -= 1
+
+    if st.session_state.hamster_hunger < 0:
+        st.session_state.hamster_hunger = 0
+
+    if st.session_state.hamster_happiness < 0:
+        st.session_state.hamster_happiness = 0
+
+    # =====================================================
+    # STATUS MESSAGES
+    # =====================================================
+
+    st.markdown("---")
+
+    if st.session_state.hamster_hunger <= 30:
+
+        st.warning(
+            f"🥺 {st.session_state.hamster_name} is hungry!"
+        )
+
+    if st.session_state.hamster_happiness <= 30:
+
+        st.warning(
+            f"😢 {st.session_state.hamster_name} feels lonely!"
+        )
+
+    if (
+        st.session_state.hamster_happiness >= 80
+        and st.session_state.hamster_hunger >= 80
+    ):
+
+        st.success(
+            f"🌟 {st.session_state.hamster_name} is extremely happy!"
+        )
+
+    # =====================================================
+    # DAILY REWARD
+    # =====================================================
+
+    st.markdown("---")
+
+    st.subheader("🎁 Daily Reward")
+
+    if st.button("Claim Daily Seeds 🌻"):
+
+        reward = random.randint(5, 20)
+
+        st.session_state.hamster_xp += reward
+
+        st.success(
+            f"🎉 You gained {reward} XP!"
+        )
+
+    # =====================================================
+    # ACCESSORY SHOP
+    # =====================================================
+
+    st.markdown("---")
+
+    st.subheader("🛍️ Hamster Accessories")
+
+    accessories = [
+        "🎀 Pink Ribbon",
+        "👑 Tiny Crown",
+        "🕶️ Cool Glasses",
+        "🎓 Graduation Hat"
+    ]
+
+    selected_accessory = st.selectbox(
+        "Choose Accessory",
+        accessories
+    )
+
+    if st.button("Equip Accessory"):
+
+        st.success(
+            f"{st.session_state.hamster_name} equipped {selected_accessory}!"
+        )
+
+    # =====================================================
+    # STUDY BONUS
+    # =====================================================
+
+    st.markdown("---")
+
+    st.subheader("🚀 Study Rewards")
+
+    st.info("""
+    📚 Complete study tasks to level up faster!
+
+    Rewards:
+    - Correct quizzes = +10 XP
+    - Complete chapters = +15 XP
+    - High productivity = +20 XP
+    """)
+
+    # =====================================================
+    # ACHIEVEMENTS
+    # =====================================================
+
+    st.markdown("---")
+
+    st.subheader("🏆 Hamster Achievements")
+
+    if xp >= 200:
+
+        st.success(
+            "🐹🔥 Legendary Hamster Unlocked!"
+        )
+
+    elif xp >= 100:
+
+        st.success(
+            "👑 Elite Hamster Unlocked!"
+        )
+
+    elif xp >= 50:
+
+        st.info(
+            "📚 Study Hamster Unlocked!"
+        )
+
+    else:
+
+        st.warning(
+            "✨ Keep studying to unlock evolutions!"
+        )
+```
+```python id="8ht9ms"
+menu = st.sidebar.radio(
+    "Navigate",
+    [
+        "🏠 Dashboard",
+        "🤖 AI Study Chat",
+        "📚 Revision Hub",
+        "⏰ Productivity",
+        "🎯 Progress Tracker",
+        "🐹 Study Hamster"
+    ]
+)
+```
 
